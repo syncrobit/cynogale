@@ -1,7 +1,6 @@
-CC=gcc
-CFLAGS=-O3 -UDEBUG -DNO_CGI -DBWA_ENABLE_MATH_FUNC -DBWA_ENABLE_THREADS
-LDFLAGS=-lm -ldl -lrt -lpthread
-LIBDIR=/usr/local/lib
+CC ?= gcc
+CFLAGS += -O3 -UDEBUG -DNO_CGI -DBWA_ENABLE_MATH_FUNC -DBWA_ENABLE_THREADS
+LDFLAGS += -lm -ldl -lrt -lpthread
 
 .PHONY: all libbwa
 
@@ -23,3 +22,4 @@ clean:
 	-rm -f cyanogale
 	-rm -f obj/*.o
 
+$(shell mkdir -p obj)
