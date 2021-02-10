@@ -16,7 +16,6 @@
 #include "bwa.h"
 
 #include "extensions/sqlite3.inl"
-#include "extensions/number_format.inl"
 
 static struct mg_context *ctx; /* Set by start_civetweb() */
 static bwa *bEngine; /* BWA engine */
@@ -124,14 +123,6 @@ int bwa_script(struct mg_connection *conn, void *cbdata){
 
     //SQLite Functions
     rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query,NULL);
-    if( rc != BWA_OK ){
-        mg_send_http_error( conn, 500, "sqlite_query function failed");
-        bwa_lib_shutdown();
-        return 1;
-    }
-
-    //Number Format Function
-    rc = bwa_create_function(bVm,"number_format", bwa_number_format,NULL);
     if( rc != BWA_OK ){
         mg_send_http_error( conn, 500, "sqlite_query function failed");
         bwa_lib_shutdown();
