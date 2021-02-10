@@ -19,7 +19,7 @@ cynogale: main.c obj/civetweb.o obj/bwa.o
 #	$(CC) -g -DNO_SSL -o $@ $^ -lph7 $(LDFLAGS)
 
 clean:
-	-rm -f cyanogale
+	-rm -f cynogale
 	-rm -f obj/*.o
 
 $(shell mkdir -p obj)
