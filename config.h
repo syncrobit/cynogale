@@ -1,5 +1,5 @@
 #define HOME "/usr/share/cynogale/html"
-#define PORT "8080"
+#define PORT "80"
 #define API_PORT "2391"
 #define ERROR_PATH "/var/log/cynogale"
 #define INDEX_FILE "index.bwa"
