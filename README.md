@@ -20,9 +20,7 @@ Cynogale combines:
 ## Dependencies
 * [Civetweb](https://github.com/bel2125/civetweb)
 * [PH7](https://github.com/symisc/PH7)
-* [uthash](https://github.com/troydhanson/uthash)
 * [Sqlite 3](http://www.sqlite.org) (optional - recommend using your distro's shared library and header)
-* Linux 2.6+ (tested on Debian 7 x86 w/ kernel 3.2)
 
 ## Caveats
 * PHP5 support omits some PHP5 features, like preg_replace, DBO, and modules support
@@ -31,7 +29,7 @@ Cynogale combines:
 
 ## Instructions
 * symlink **include/civetweb.h**, **src/civetweb.c**, and **src/md5.inl** to the Cynogale directory
-* symlink **ph7.h** and **ph7.c** to the Cynogale directory
+* symlink **bwa.h** and **bwa.c** to the Cynogale directory
 * copy or symlink **uthash.h** to the Cynogale directory, or make it available in the compiler search path
 * if your distro/system doesn't have sqlite as a package, see below for instructions on how to create a shared libray
 * optional - create and add PH7 foreign function bindings (see **main.c** and **sqlite.inl** for an example)
