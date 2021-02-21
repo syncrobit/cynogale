@@ -3,7 +3,6 @@
 Cynogale combines:
 * the [Civetweb](https://github.com/bel2125/civetweb) embeddable webserver
 * the [PH7](https://github.com/symisc/PH7) embeddable PHP5 compiler 
-* the [uthash](https://github.com/troydhanson/uthash) library
 * the [Sqlite 3](http://www.sqlite.org) ebeddable database (optional)
 
 ...into a lighweight PHP5 webserver with an expiring key-value store and optional Sqlite database access
@@ -12,7 +11,6 @@ Cynogale combines:
 * serve static files
 * similar to CGI, but PHP is compiled and executed inside a Civetweb thread worker
 * **$_GET,** **$_POST**, **$_SERVER**, and **$_HEADER** provided on each request
-* built-in expiring key-value store based on uthash, supports persistent keys
 * optional Sqlite3 support
 * optional PHP script caching
 * MIT license
@@ -30,7 +28,6 @@ Cynogale combines:
 ## Instructions
 * symlink **include/civetweb.h**, **src/civetweb.c**, and **src/md5.inl** to the Cynogale directory
 * symlink **bwa.h** and **bwa.c** to the Cynogale directory
-* copy or symlink **uthash.h** to the Cynogale directory, or make it available in the compiler search path
 * if your distro/system doesn't have sqlite as a package, see below for instructions on how to create a shared libray
 * optional - create and add PH7 foreign function bindings (see **main.c** and **sqlite.inl** for an example)
 * edit **config.h** to suit
