@@ -176,7 +176,7 @@ int main(int argc, char **argv){
     const char * options[] = {
             "document_root", HOME,
             "listening_ports", PORT,
-            "index_files", INDEX_FILE,
+            "index_files", "index",
             "error_log_file", concat(ERROR_PATH, "/error.log"),
             0
     };
@@ -198,7 +198,7 @@ int main(int argc, char **argv){
     ctx = mg_start(NULL, NULL, options);
 
     mg_set_request_handler(ctx, "**.bwa$", bwa_script, 0);
-    mg_set_request_handler(ctx, "/", index_handler, 0);
+    mg_set_request_handler(ctx, "/index", index_handler, 0);
 
     printf("Cyanogale started on port(s) %s\n",
            mg_get_option(ctx, "listening_ports"));
