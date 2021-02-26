@@ -304,7 +304,7 @@ int main(int argc, char **argv){
     ctx = mg_start(NULL, NULL, options);
 
     mg_set_request_handler(ctx, "**.bwa$", bwa_script, 0);
-    mg_set_request_handler(ctx, "**.jbwa$$", bwa_script_json, 0);
+    mg_set_request_handler(ctx, "**.jbwa$", bwa_script_json, 0);
     mg_set_request_handler(ctx, "/$", index_handler, 0);
 
     printf("Cyanogale started on port(s) %s\n",
