@@ -29,7 +29,7 @@ Cynogale combines:
 * symlink **include/civetweb.h**, **src/civetweb.c**, and **src/md5.inl** to the Cynogale directory
 * symlink **bwa.h** and **bwa.c** to the Cynogale directory
 * if your distro/system doesn't have sqlite as a package, see below for instructions on how to create a shared libray
-* optional - create and add PH7 foreign function bindings (see **main.c** and **sqlite.inl** for an example)
+* optional - create and add BWA foreign function bindings (see **main.c** and **sqlite.inl** for an example)
 * edit **config.h** to suit
   * **HOME** base directory
   * **ROOT** document root relative to **HOME**
