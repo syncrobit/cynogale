@@ -2,7 +2,7 @@
 
 Cynogale combines:
 * the [Civetweb](https://github.com/bel2125/civetweb) embeddable webserver
-* the [PH7](https://github.com/symisc/PH7) embeddable PHP5 compiler 
+* the [BWA] embeddable PHP5 compiler 
 * the [Sqlite 3](http://www.sqlite.org) ebeddable database (optional)
 
 ...into a lighweight PHP5 webserver with an expiring key-value store and optional Sqlite database access
