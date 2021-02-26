@@ -2,7 +2,7 @@
 
 Cynogale combines:
 * the [Civetweb](https://github.com/bel2125/civetweb) embeddable webserver
-* the [PH7](https://github.com/symisc/PH7) embeddable PHP5 compiler 
+* the [BWA] embeddable PHP5 compiler 
 * the [Sqlite 3](http://www.sqlite.org) ebeddable database (optional)
 
 ...into a lighweight PHP5 webserver with an expiring key-value store and optional Sqlite database access
@@ -17,7 +17,7 @@ Cynogale combines:
 
 ## Dependencies
 * [Civetweb](https://github.com/bel2125/civetweb)
-* [PH7](https://github.com/symisc/PH7)
+* [BWA] PHP like interpreter
 * [Sqlite 3](http://www.sqlite.org) (optional - recommend using your distro's shared library and header)
 
 ## Caveats
@@ -29,7 +29,7 @@ Cynogale combines:
 * symlink **include/civetweb.h**, **src/civetweb.c**, and **src/md5.inl** to the Cynogale directory
 * symlink **bwa.h** and **bwa.c** to the Cynogale directory
 * if your distro/system doesn't have sqlite as a package, see below for instructions on how to create a shared libray
-* optional - create and add PH7 foreign function bindings (see **main.c** and **sqlite.inl** for an example)
+* optional - create and add BWA foreign function bindings (see **main.c** and **sqlite.inl** for an example)
 * edit **config.h** to suit
   * **HOME** base directory
   * **ROOT** document root relative to **HOME**
