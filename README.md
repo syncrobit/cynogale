@@ -17,7 +17,7 @@ Cynogale combines:
 
 ## Dependencies
 * [Civetweb](https://github.com/bel2125/civetweb)
-* [PH7](https://github.com/symisc/PH7)
+* [BWA] PHP like interpreter
 * [Sqlite 3](http://www.sqlite.org) (optional - recommend using your distro's shared library and header)
 
 ## Caveats
