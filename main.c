@@ -169,6 +169,112 @@ int bwa_script(struct mg_connection *conn, void *cbdata){
     return 1;
 }
 
+int bwa_script_json(struct mg_connection *conn, void *cbdata){
+    int rc;
+    const void *pOut;
+    unsigned int nLen;
+    char *buff = NULL;
+    int c = 0,i = 1;
+
+    /* Handler may access the request info using mg_get_request_info */
+    const struct mg_request_info * req_info = mg_get_request_info(conn);
+    const char * path = concat(HOME, req_info->local_uri);
+
+    if (!file_exists(path)){
+        mg_send_http_error(conn, 404, "Not Found");
+        return 1;
+    }
+
+    buff = (char *)malloc(req_info->length);
+    memcpy(buff,req_info->buffer, req_info->length);
+
+    for (i = 0; i < req_info->length - 1; i++){
+        if (buff[i] == '\0'){
+            if (buff[i+1] != '\0'){
+                if (c == 1 && buff[i + 1] != 'H'){
+                    buff[i] = '?';
+                }else{
+                    buff[i] = ' ';
+                }
+                c++;
+            }
+        }
+    }
+
+    /* Now,it's time to compile our PHP file */
+    rc = bwa_compile_file(
+            bEngine, /* BWA Engine */
+            path, /* Path to the BWA file to compile */
+            &bVm,    /* OUT: Compiled BWA program */
+            0        /* IN: Compile flags */
+    );
+
+    if( rc != BWA_OK ){ /* Compile error */
+        if( rc == BWA_IO_ERR ){
+            Fatal("IO Error");
+        }else if( rc == BWA_VM_ERR ){
+            Fatal("VM initialization error");
+        }else{
+            /* Compile-time error, your output (STDOUT) should display the error messages */
+            Fatal("Compile error");
+        }
+    }
+
+    rc = bwa_vm_config(bVm, BWA_VM_CONFIG_HTTP_REQUEST, buff, req_info->length);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "Error while transferring the HTTP request to BWA.");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    //SQLite Functions
+    rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query,NULL);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "sqlite_query function failed");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    rc = bwa_vm_config(bVm, BWA_VM_CONFIG_IMPORT_PATH, HOME);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "Cannot get Import Path");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    rc = bwa_vm_exec(bVm,0);
+    if( rc != BWA_OK ){
+        Fatal("VM execution error");
+    }
+
+    /*
+     * Now we have our script compiled,it's time to configure our VM.
+     * We will install the VM output consumer callback defined above
+     * so that we can consume the VM output and redirect it to STDOUT.
+     */
+
+    /* Extract the output */
+    rc = bwa_vm_config(bVm,
+                       BWA_VM_CONFIG_EXTRACT_OUTPUT,
+                       &pOut,
+                       &nLen
+    );
+
+    if(nLen > 0){
+        mg_printf(conn, "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n");
+        mg_write(conn, pOut, nLen);
+    }
+
+#if REPORT_ERRORS+1
+    /* Report script run-time errors */
+    bwa_vm_config(bVm,BWA_VM_CONFIG_ERR_REPORT);
+#endif
+
+    bwa_vm_reset(bVm);
+
+    return 1;
+}
+
 
 int main(int argc, char **argv){
 
@@ -198,6 +304,7 @@ int main(int argc, char **argv){
     ctx = mg_start(NULL, NULL, options);
 
     mg_set_request_handler(ctx, "**.bwa$", bwa_script, 0);
+    mg_set_request_handler(ctx, "**.jbwa$$", bwa_script_json, 0);
     mg_set_request_handler(ctx, "/$", index_handler, 0);
 
     printf("Cyanogale started on port(s) %s\n",
