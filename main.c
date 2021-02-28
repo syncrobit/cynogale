@@ -16,6 +16,7 @@
 #include "bwa.h"
 
 #include "extensions/sqlite3.inl"
+#include "extensions/curl.inl"
 
 static struct mg_context *ctx; /* Set by start_civetweb() */
 static bwa *bEngine; /* BWA engine */
@@ -122,9 +123,17 @@ int bwa_script(struct mg_connection *conn, void *cbdata){
     }
 
     //SQLite Functions
-    rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query,NULL);
+    rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query, NULL);
     if( rc != BWA_OK ){
         mg_send_http_error( conn, 500, "sqlite_query function failed");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    //CURL Functions
+    rc = bwa_create_function(bVm,"curl_get", bwa_curl_get, NULL);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "curl_get function failed");
         bwa_lib_shutdown();
         return 1;
     }
@@ -228,9 +237,17 @@ int bwa_script_json(struct mg_connection *conn, void *cbdata){
     }
 
     //SQLite Functions
-    rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query,NULL);
+    rc = bwa_create_function(bVm,"sqlite_query", bwa_sqlite_query, NULL);
     if( rc != BWA_OK ){
         mg_send_http_error( conn, 500, "sqlite_query function failed");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    //CURL Functions
+    rc = bwa_create_function(bVm,"curl_get", bwa_curl_get, NULL);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "curl_get function failed");
         bwa_lib_shutdown();
         return 1;
     }

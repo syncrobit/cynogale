@@ -29,13 +29,12 @@ static int bwa_curl_get(bwa_context *ctx, int argc, bwa_value **argv) {
     CURL *curl_handle = NULL;
     struct curl_slist *list = NULL;
 
-    const char *error, *url, *header_option;
+    const char *error, *url;
     int i, len;
-    bwa_value *result = NULL;
     struct curl_result_data curl_res;
 
     if (argc < 1) {
-        error = "Missing argument";
+        error = "Missing argument(s)";
         bwa_result_string(ctx, error, strlen(error));
         return BWA_OK;
     }
@@ -73,16 +72,16 @@ static int bwa_curl_get(bwa_context *ctx, int argc, bwa_value **argv) {
     curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list);
     res = curl_easy_perform(curl_handle);
 
-    if (res != CURLE_OK) {
+    // Set result data
+    if (res == CURLE_OK) {
+        bwa_result_string(ctx, curl_res.memory, curl_res.size);
+    }
+    else
+    {
+        // Something went wrong
         error = curl_easy_strerror(res);
         bwa_result_string(ctx, error, strlen(error));
-        return BWA_OK;
     }
-
-    // Set result data
-    result = bwa_context_new_scalar(ctx);
-    bwa_value_string(result, curl_res.memory, curl_res.size);
-    bwa_result_value(ctx,result);
 
     // Cleanup
     free(curl_res.memory);

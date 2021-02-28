@@ -13,7 +13,7 @@ obj/bwa.o: bwa.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 cynogale: main.c obj/civetweb.o obj/bwa.o
-	$(CC) -g -o $@ $^ $(LDFLAGS) -lsqlite3
+	$(CC) -g -o $@ $^ $(LDFLAGS) -lsqlite3 -lcurl
 #	$(CC) $(CFLAGS) -DUSE_SQLITE -DSCRIPT_CACHE -o $@ $^ -lph7 $(LDFLAGS) -lsqlite3
 #	$(CC) $(CFLAGS) -o $@ $^ -lph7 $(LDFLAGS)
 #	$(CC) -g -DNO_SSL -o $@ $^ -lph7 $(LDFLAGS)
