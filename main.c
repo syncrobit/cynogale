@@ -145,6 +145,13 @@ int bwa_script(struct mg_connection *conn, void *cbdata){
         return 1;
     }
 
+    rc = bwa_create_function(bVm,"curl_post_message", bwa_curl_post_message, NULL);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "curl_post_message function failed");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
     rc = bwa_vm_config(bVm, BWA_VM_CONFIG_IMPORT_PATH, HOME);
     if( rc != BWA_OK ){
         mg_send_http_error( conn, 500, "Cannot get Import Path");
@@ -262,6 +269,13 @@ int bwa_script_json(struct mg_connection *conn, void *cbdata){
     rc = bwa_create_function(bVm,"curl_post", bwa_curl_post, NULL);
     if( rc != BWA_OK ){
         mg_send_http_error( conn, 500, "curl_post function failed");
+        bwa_lib_shutdown();
+        return 1;
+    }
+
+    rc = bwa_create_function(bVm,"curl_post_message", bwa_curl_post_message, NULL);
+    if( rc != BWA_OK ){
+        mg_send_http_error( conn, 500, "curl_post_message function failed");
         bwa_lib_shutdown();
         return 1;
     }
