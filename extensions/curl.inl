@@ -234,6 +234,7 @@ static int bwa_curl_post_message(bwa_context *ctx, int argc, bwa_value **argv) {
     }
 
     // Cleanup
+    free(curl_res.memory);
     curl_easy_cleanup(curl_handle);
 	
     return BWA_OK;
